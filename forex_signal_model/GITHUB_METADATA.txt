@@ -1,0 +1,117 @@
+GitHub Repository Metadata & Description
+==========================================
+
+REPOSITORY NAME:
+forex-signal-model
+
+SHORT DESCRIPTION (for GitHub):
+ML-powered forex & crypto trading signal predictor with XGBoost, real-time dashboard, and backtesting support.
+
+LONG DESCRIPTION (for About section):
+
+🚀 **Forex Signal Model** — Production-Ready ML Trading System
+
+An enterprise-grade machine learning framework for generating trading signals on forex and cryptocurrency pairs. Built with XGBoost, integrated with Binance & Yahoo Finance APIs, and featuring a real-time Flask dashboard for signal monitoring.
+
+**Key Features:**
+✨ XGBoost-based predictive model for 5m-1d scalp & spot trading
+📊 Multi-source data: Binance REST API + Yahoo Finance
+🎯 Real-time signal generation with entry/exit levels
+📈 Full backtesting pipeline for strategy validation
+🖥️ Interactive Flask web dashboard with OHLCV charts
+🔌 MetaTrader 4/5 integration layer (extensible)
+⚙️ Modular architecture for easy customization
+📦 Production-ready error handling & logging
+
+**Tech Stack:**
+- Python 3.8+
+- XGBoost, scikit-learn, pandas, numpy
+- Flask + Flask-CORS (web server)
+- Binance API, yfinance (data sources)
+- SHAP (model interpretability)
+
+**Quick Start:**
+```bash
+pip install -r requirements.txt
+python scripts/train.py --symbol BTCUSDT --interval 5m
+python app.py  # Dashboard at http://localhost:5000
+```
+
+**Documentation:**
+- [Installation Guide](INSTALLATION.md) — Detailed setup instructions
+- [Quick Start](README.md) — Overview and basic usage
+- [Contributing Guide](CONTRIBUTING.md) — Development guidelines
+- [Setup Guide](SETUP.md) — Configuration and troubleshooting
+
+**Disclaimer:**
+This project is for educational and research purposes. Trading involves substantial risk of loss. Past performance does not guarantee future results. Always conduct your own research and consult financial advisors before trading.
+
+**License:** MIT
+
+---
+
+TOPICS (Add these tags on GitHub):
+☑️ machine-learning
+☑️ forex
+☑️ cryptocurrency
+☑️ xgboost
+☑️ trading
+☑️ signals
+☑️ python
+☑️ flask
+☑️ binance
+☑️ yfinance
+☑️ backtesting
+☑️ fintech
+☑️ scikit-learn
+
+---
+
+HOW TO ADD ON GITHUB:
+
+1. Go to: https://github.com/bilalrazanet/forex-signal-model
+2. Click "Settings" → "General"
+3. In "About" section, click edit (pencil icon)
+4. Add Short Description & Long Description
+5. Add Topics (search and select from suggested)
+6. Click "Save changes"
+
+OPTIONAL: GITHUB ACTIONS (CI/CD)
+================================
+
+Create: .github/workflows/python-tests.yml
+
+name: Run Tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - run: pytest tests/ -v
+
+---
+
+OPTIONAL: README BADGES
+======================
+
+Add to top of README.md:
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![Tests](https://github.com/bilalrazanet/forex-signal-model/actions/workflows/python-tests.yml/badge.svg)
+
+---
+
+REPOSITORY VISIBILITY:
+✓ Public (already set)
+✓ Main branch protection enabled (optional)
+✓ Requires PR reviews before merge (optional)
+
+STATUS: ✅ READY FOR SHARING
+Your repository is now professional-grade and ready to showcase!
