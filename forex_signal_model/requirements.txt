@@ -1,0 +1,12 @@
+numpy==1.26.4
+pandas==2.2.2
+yfinance==0.2.40
+scikit-learn==1.5.1
+joblib==1.4.2
+xgboost==2.1.1
+python-dotenv==1.0.1
+requests==2.32.3
+pytest==8.4.0
+shap==0.45.1
+Flask==3.0.3
+Flask-Cors==4.0.1

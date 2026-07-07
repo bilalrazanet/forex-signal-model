@@ -1,0 +1,12 @@
+# ─────────────────────────────────────
+#  .gitignore — never commit secrets
+# ─────────────────────────────────────
+.env
+*.joblib
+__pycache__/
+.venv/
+.pytest_cache/
+*.pyc
+*.pyo
+.tz_cache/
+signals_out.json
