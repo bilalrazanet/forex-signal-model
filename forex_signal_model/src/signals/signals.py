@@ -7,7 +7,11 @@ import numpy as np
 import pandas as pd
 
 
-import shap
+try:
+    import shap
+    SHAP_AVAILABLE = True
+except ImportError:
+    SHAP_AVAILABLE = False
 
 @dataclass(frozen=True)
 class SignalConfig:
@@ -40,24 +44,49 @@ def predict_signal(model_bundle: dict, row: pd.Series, feature_cols: list, cfg: 
 
     reason = "No clear signal."
     if side in ["BUY", "SELL"]:
-        try:
-            explainer = shap.TreeExplainer(model)
-            shap_values = explainer.shap_values(X)
-            
-            if isinstance(shap_values, list):
-                vals = shap_values[1][0] if side == "BUY" else shap_values[0][0]
-            else:
-                vals = shap_values[0]
-                if side == "SELL":
-                    vals = -vals
+        if SHAP_AVAILABLE:
+            try:
+                explainer = shap.TreeExplainer(model)
+                shap_values = explainer.shap_values(X)
+                
+                if isinstance(shap_values, list):
+                    vals = shap_values[1][0] if side == "BUY" else shap_values[0][0]
+                else:
+                    vals = shap_values[0]
+                    if side == "SELL":
+                        vals = -vals
 
-            top_indices = np.argsort(vals)[-3:][::-1]
-            top_features = [feature_cols[i] for i in top_indices if vals[i] > 0]
+                top_indices = np.argsort(vals)[-3:][::-1]
+                top_features = [feature_cols[i] for i in top_indices if vals[i] > 0]
+                
+                if top_features:
+                    reason = f"AI detected strong signals from: {', '.join(top_features)}."
+            except Exception as e:
+                reason = f"Could not generate SHAP reason: {e}"
+        
+        # Fallback to feature values if SHAP is not available or failed
+        if reason == "No clear signal." or "Could not generate SHAP" in reason:
+            reasons = []
+            if side == "BUY":
+                if row.get("rsi_14", 50) < 45:
+                    reasons.append("RSI shows oversold/pullback support")
+                if row.get("price_vs_ema21", 0) > 0:
+                    reasons.append("Price holds above EMA-21 trend line")
+                if row.get("macd", 0) > 0:
+                    reasons.append("MACD momentum is positive")
+                if not reasons:
+                    reasons.append("Price action aligns with bullish SMC structure")
+            else: # SELL
+                if row.get("rsi_14", 50) > 55:
+                    reasons.append("RSI indicates overbought/pullback resistance")
+                if row.get("price_vs_ema21", 0) < 0:
+                    reasons.append("Price is below EMA-21 trend line")
+                if row.get("macd", 0) < 0:
+                    reasons.append("MACD momentum is negative")
+                if not reasons:
+                    reasons.append("Price action aligns with bearish SMC structure")
             
-            if top_features:
-                reason = f"AI detected strong signals from: {', '.join(top_features)}."
-        except Exception as e:
-            reason = f"Could not generate reason: {e}"
+            reason = "AI Confluence: " + ", ".join(reasons[:2]) + "."
 
     return {
         "side": side,

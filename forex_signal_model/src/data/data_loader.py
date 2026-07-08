@@ -43,8 +43,11 @@ class YahooFinanceLoader:
         # yfinance returns multi-index columns when tickers is a list.
         # We normalize to single level: columns = ['Open','High','Low','Close','Adj Close','Volume']
         if isinstance(df.columns, pd.MultiIndex):
-            # pick first ticker
-            df = df.xs(symbol, axis=1, drop_level=True)
+            # Slice on the ticker level (which is level 1 in yfinance MultiIndex)
+            if symbol in df.columns.get_level_values(1):
+                df = df.xs(symbol, axis=1, level=1, drop_level=True)
+            elif symbol in df.columns.get_level_values(0):
+                df = df.xs(symbol, axis=1, level=0, drop_level=True)
 
         # Ensure datetime index is present
         if not isinstance(df.index, pd.DatetimeIndex):

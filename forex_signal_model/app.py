@@ -348,9 +348,9 @@ def api_predict():
     horizon_minutes = int(request.args.get("horizon_minutes", 15))
 
     try:
-            source, resolved_sym, df = _fetch(symbol, interval, "3d")
-            if df.empty:
-                return jsonify({"error": f"No data from {source}"}), 400
+        source, resolved_sym, df = _fetch(symbol, interval, "3d")
+        if df.empty:
+            return jsonify({"error": f"No data from {source}"}), 400
 
         df_feat      = add_features(df)
         feature_cols = _model_bundle["artifacts"]["feature_cols"]
