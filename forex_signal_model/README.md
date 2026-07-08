@@ -2,261 +2,95 @@
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-ML-powered **forex & cryptocurrency trading signal predictor** with XGBoost, real-time dashboard, and backtesting support. Built for scalp (5m+) and spot trading strategies.
-
-<div align="center">
-  <img src="https://img.shields.io/badge/Status-Production%20Ready-brightgreen" alt="Status">
-  <img src="https://img.shields.io/badge/Data%20Sources-Binance%20%7C%20Yahoo%20Finance-orange" alt="Data">
-  <img src="https://img.shields.io/badge/Model-XGBoost-blue" alt="Model">
-</div>
+A machine-learning trading signal project for crypto, forex, and commodities with an XGBoost model, live prediction workflow, and a Flask-based dashboard. The current repository is focused on Binance market data for real-time analysis and signal generation.
 
 ---
 
-## 📋 Table of Contents
+## ✨ What’s included
 
-- [Features](#-features)
-- [Quick Start](#-quick-start)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Architecture](#-architecture)
-- [Configuration](#-configuration)
-- [Backtesting](#-backtesting)
-- [FAQ](#-faq)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Disclaimer](#-disclaimer)
+- XGBoost-based signal model training and inference
+- Binance OHLCV data loading and market statistics
+- Yahoo Finance support for forex and commodity symbols
+- Flask dashboard for live charts, signal display, and training workflow
+- Feature engineering with technical indicators such as RSI, MACD, ATR, Bollinger Bands, and volume-based metrics
+- Training, backtesting, and live prediction scripts
+- MetaTrader bridge support for exporting signals
 
 ---
 
-## ✨ Features
+## 🚀 Quick start
 
-### Core ML & Signals
-- **XGBoost Classifier** — Production ML model for binary trade signals (BUY/SELL/HOLD)
-- **Multi-Timeframe Support** — 1m, 5m, 15m, 30m, 1h, 4h, 1d candles
-- **Real-Time Predictions** — Live signal generation with entry/exit levels
-- **Feature Engineering** — 50+ technical indicators (RSI, MACD, Bollinger Bands, ATR, etc.)
-- **Model Interpretability** — SHAP values for feature importance analysis
-
-### Data Sources
-- **Binance API** — Real-time crypto price data (BTCUSDT, ETHUSDT, SOL, ADA, LINK, etc.)
-- **Yahoo Finance** — Forex & commodity pairs (EURUSD=X, GBPUSD=X, Gold, Oil, S&P 500)
-- **Extensible Architecture** — Easily add AlphaVantage, IQFeed, or custom data sources
-
-### Web Dashboard
-- **Flask-based UI** — Interactive web interface at `localhost:5000`
-- **Live Charts** — OHLCV candles with technical indicators
-- **Signal Display** — Real-time entry/exit recommendations
-- **Training Interface** — Train models directly from the dashboard
-- **24h Statistics** — Price changes, volume, support/resistance levels
-
-### Advanced Tools
-- **Backtesting Pipeline** — Replay historical data with signal evaluation
-- **Bulk Training** — Train multiple symbols in parallel
-- **MetaTrader Bridge** — Connect to MT4/MT5 Expert Advisors
-- **Error Handling** — Production-grade logging and exception management
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8 or higher
-- pip or conda
-- Internet connection (for live data)
-
-### Installation (2 minutes)
+### 1. Clone and install
 
 ```bash
-# Clone the repository
 git clone https://github.com/bilalrazanet/forex-signal-model.git
 cd forex-signal-model
-
-# Create virtual environment
 python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### Train a Model (1 minute)
+### 2. Train the model
 
 ```bash
-# Single symbol, 5-minute candles
 python scripts/train.py --symbol BTCUSDT --interval 5m
-
-# Multiple symbols
-python scripts/train.py --symbols BTCUSDT,ETHUSDT --interval 5m
-
-# Yahoo Finance (Forex)
-python scripts/train.py --data_source yahoo --symbol EURUSD=X --interval 15m
 ```
 
-### Launch Dashboard (30 seconds)
+### 3. Start the dashboard
 
 ```bash
 python app.py
 ```
 
-Open browser: **http://localhost:5000**
+Then open http://localhost:5000.
 
 ---
 
-## 📦 Installation
+## 🧠 Current capabilities
 
-See [INSTALLATION.md](INSTALLATION.md) for detailed instructions including:
-- Virtual environment setup
-- Dependency installation
-- Environment variable configuration
-- Troubleshooting common issues
-
----
-
-## 💻 Usage
-
-### Training Models
-
-#### Basic Training
-```bash
-python scripts/train.py \
-  --symbol BTCUSDT \
-  --interval 5m \
-  --lookback 500 \
-  --train_split 0.8
-```
-
-**Parameters:**
-- `--symbol` — Trading pair (BTCUSDT, EURUSD=X, etc.)
-- `--interval` — Candle size (1m, 5m, 15m, 30m, 1h, 4h, 1d)
-- `--lookback` — Number of historical candles (default: 500)
-- `--train_split` — Train/test ratio (default: 0.8)
-- `--data_source` — 'binance' or 'yahoo' (default: binance)
-
-#### Multi-Symbol Training
-```bash
-python scripts/train.py \
-  --symbols BTCUSDT,ETHUSDT,BNBUSDT \
-  --interval 15m
-```
-
-#### Bulk Training (All Symbols)
-```bash
-python scripts/bulk_train.py --interval 5m
-```
-
-### Live Predictions
-
-```bash
-python scripts/live_predict.py \
-  --symbol BTCUSDT \
-  --interval 5m \
-  --check_interval 300
-```
-
-### Web Dashboard
-
-```bash
-python app.py --port 5000
-```
+- Train models for single symbols or multiple symbols
+- Run live prediction loops for ongoing signal generation
+- View market data and trade signals from the built-in dashboard
+- Use Binance for crypto and PAXGUSDT for XAU/USD gold exposure
+- Use Yahoo Finance symbols such as EURUSD=X and other forex pairs
 
 ---
 
-## 🏗️ Architecture
+## 📁 Project layout
 
-### Project Structure
-
-```
+```text
 forex-signal-model/
-├── src/
-│   ├── data/
-│   │   ├── binance_loader.py      # Binance API integration
-│   │   ├── data_loader.py         # Yahoo Finance & data fetching
-│   │   ├── features.py            # Technical indicator engineering
-│   │   └── utils.py               # Data utilities
-│   ├── models/
-│   │   └── train.py               # XGBoost model training
-│   ├── signals/
-│   │   └── signals.py             # Signal generation logic
-│   └── broker/
-│       └── metatrader_bridge.py   # MT4/MT5 integration
+├── app.py
+├── model.joblib
+├── requirements.txt
 ├── scripts/
-│   ├── train.py                   # Single model training
-│   ├── bulk_train.py              # Multi-symbol training
-│   ├── live_predict.py            # Real-time prediction loop
-│   └── backtest.py                # Backtesting engine
+│   ├── train.py
+│   ├── live_predict.py
+│   └── backtest.py
+├── src/
+│   ├── broker/
+│   ├── data/
+│   ├── models/
+│   └── signals/
 ├── dashboard/
-│   └── index.html                 # Web UI
 ├── tests/
-│   └── test_data_loader.py        # Unit tests
-├── app.py                         # Flask web server
-├── model.joblib                   # Trained XGBoost model
-├── requirements.txt               # Python dependencies
-└── README.md                      # This file
+└── README.md
 ```
-
----
-
-## 🔧 Configuration
-
-Create a `.env` file in the project root:
-
-```env
-DATA_SOURCE=binance
-BINANCE_API_KEY=your_api_key_here
-BINANCE_API_SECRET=your_secret_here
-FLASK_ENV=development
-FLASK_DEBUG=1
-FLASK_PORT=5000
-MODEL_PATH=./model.joblib
-```
-
----
-
-## 📈 Backtesting
-
-```bash
-python scripts/backtest.py \
-  --symbol BTCUSDT \
-  --interval 5m \
-  --start_date 2023-01-01 \
-  --end_date 2024-01-01
-```
-
----
-
-## ❓ FAQ
-
-### Q: What symbols are supported?
-
-**A:** Any symbol on Binance (crypto) or Yahoo Finance (forex, commodities, indices).
-
-**Popular Crypto:** BTCUSDT, ETHUSDT, BNBUSDT, SOLUSDT, XRPUSDT, LINKUSDT, LTCUSDT, AVAXUSDT
-
-**Popular Forex:** EURUSD=X, GBPUSD=X, USDJPY=X, USDCHF=X, AUDUSD=X, USDCAD=X, NZDUSD=X
-
-**Commodities:** SI=F (Silver), CL=F (Oil), GC=F (Gold)
-
-### Q: How do I add custom indicators?
-
-Edit [src/data/features.py](src/data/features.py) and add your feature function.
-
-### Q: Is this profitable?
-
-**A:** Past performance ≠ future results. Backtesting shows ~65% win rate in specific conditions. **Always test thoroughly and start with small positions.**
-
-### Q: Can I deploy to production?
-
-**A:** Yes, but use proper risk management, paper trading first, and periodic model retraining.
 
 ---
 
 ## 📚 Documentation
 
-- **[INSTALLATION.md](INSTALLATION.md)** — Setup guide
-- **[CONTRIBUTING.md](CONTRIBUTING.md)** — Development guidelines
-- **[SETUP.md](SETUP.md)** — Configuration reference
+- [INSTALLATION.md](INSTALLATION.md)
+- [SETUP.md](SETUP.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+
+---
+
+## ⚠️ Disclaimer
+
+This project is for educational and research purposes only. It does not provide guaranteed trading results and should not be used as financial advice.
 
 ---
 
